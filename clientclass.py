@@ -50,10 +50,16 @@ class Client:
 
             sendData = input("你：")
             en_sendData = f.encrypt(sendData.encode())
-            clientSocket.send(en_sendData)
+            clientSocket.sendall(en_sendData)
 
-            en_recvData = clientSocket.recv(1024)
-            recvData = f.decrypt(en_recvData).decode()
-            print("GPT：{0}".format(recvData))
+            # 接收服务端的加密消息
+            total_data = bytes()
+            while True: 
+                en_recvData = clientSocket.recv(1024)
+                total_data += en_recvData
+                if len(en_recvData) < 1024:
+                    break
+            recvData = f.decrypt(total_data).decode()
+            print(f"GPT：{recvData}")
 
 

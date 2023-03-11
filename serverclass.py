@@ -72,11 +72,18 @@ class Server:
 
         # 下面使用对称密钥进行加密对话的过程
         while True:
-            time.sleep(0.3)
-            # 接收到的加密消息
-            en_recvData = clientSocket.recv(1024)
-            recvData = f.decrypt(en_recvData).decode()
-            print(f"接受到客户端{now_number}传来的消息：{recvData[:2]}")
+            
+            # 接收服务端加密消息
+            total_data = bytes()
+            while True: 
+                en_recvData = clientSocket.recv(1024)
+                total_data += en_recvData
+                if len(en_recvData) < 1024:
+                    break
+            print(f.decrypt(total_data))
+
+            recvData = f.decrypt(total_data).decode()
+            print(f"接受到客户端{now_number}传来的消息：{recvData}")
 
             # 调用chatgpt
             if len(chat.messages) >= 11:       # 限制对话次数
@@ -99,6 +106,6 @@ class Server:
             sendData = answer
             # 对消息进行加密
             en_sendData = f.encrypt(sendData.encode())
-            clientSocket.send(en_sendData)
+            clientSocket.sendall(en_sendData)
 
 

@@ -22,7 +22,7 @@ class ChatGPT:
         
         if self.messages[-1]["content"].startswith("生成图像："):
             response = openai.Image.create(
-              prompt=self.messages[-1]["content"],
+              prompt=self.messages[-1]["content"].split('：')[1],
               n=1,
               size="1024x1024"
             )
