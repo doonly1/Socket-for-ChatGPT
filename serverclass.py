@@ -96,11 +96,14 @@ class Server:
                 chat.writeTojson()
                 chat = ChatGPT("You")
 
-            else: 
-                # 提问-回答-记录
-                chat.messages.append({"role": "user", "content": recvData})
-                answer = chat.ask_gpt()
-                chat.messages.append({"role": "assistant", "content": answer})
+            else:
+                try:
+                    # 提问-回答-记录
+                    chat.messages.append({"role": "user", "content": recvData})
+                    answer = chat.ask_gpt()
+                    chat.messages.append({"role": "assistant", "content": answer})
+                except:
+                    answer = "没有接收到GPT的回答"
 
 
             sendData = answer
