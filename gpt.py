@@ -19,6 +19,17 @@ class ChatGPT:
           model="gpt-3.5-turbo",
           messages=self.messages,
         )
+        
+        if self.messages[-1]["content"].startswith("生成图像："):
+            response = openai.Image.create(
+              prompt=self.messages[-1]["content"],
+              n=1,
+              size="1024x1024"
+            )
+            image_url = response['data'][0]['url']
+            return image_url
+
+            
         return rsp.get("choices")[0]["message"]["content"]
     
     def writeTojson(self):
