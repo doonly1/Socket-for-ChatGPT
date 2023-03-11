@@ -67,7 +67,7 @@ class Server:
         en_recvkey = clientSocket.recv(1024)
         openai.api_key = f.decrypt(en_recvkey).decode()
         chat = ChatGPT('You')
-        clientSocket.send(f.encrypt("api_key传输完成".encode()))
+        clientSocket.send(f.encrypt("api_key传输完成，可以对话\n".encode()))
 
 
         # 下面使用对称密钥进行加密对话的过程
@@ -76,7 +76,7 @@ class Server:
             # 接收到的加密消息
             en_recvData = clientSocket.recv(1024)
             recvData = f.decrypt(en_recvData).decode()
-            print("接受到客户端{0}传来的消息：{1}".format(now_number, recvData))
+            print(f"接受到客户端{now_number}传来的消息：{recvData[:2]}")
 
             # 调用chatgpt
             if len(chat.messages) >= 11:       # 限制对话次数

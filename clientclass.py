@@ -48,12 +48,12 @@ class Client:
 
         while True:
 
-            sendData = input("发送：")
+            sendData = input("你：")
             en_sendData = f.encrypt(sendData.encode())
             clientSocket.send(en_sendData)
 
             en_recvData = clientSocket.recv(1024)
             recvData = f.decrypt(en_recvData).decode()
-            print("接收：{0}".format(recvData))
+            print("GPT：{0}".format(recvData))
 
 
